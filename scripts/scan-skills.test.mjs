@@ -101,6 +101,14 @@ describe('allow list', () => {
     assert.throws(() => loadConfig(root), /not found/);
   });
 
+  it('does not flag public hosts that merely start with an internal suffix', () => {
+    assert.deepEqual(
+      rulesFor('see https://python.langchain.com/docs and https://www.corporate.com'),
+      [],
+    );
+    assert.deepEqual(rulesFor('see https://wiki.corp/page'), ['internal-url']);
+  });
+
   it('does not treat package versions as emails', () => {
     assert.deepEqual(rulesFor('npm install react@18.3.1 typescript@5.4.2'), []);
   });

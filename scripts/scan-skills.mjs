@@ -26,7 +26,7 @@ const RULES = [
   {
     rule: 'internal-url',
     pattern:
-      /https?:\/\/(?:[^\s/'"`)]*\.)?linear\.app[^\s'"`)]*|https?:\/\/[^\s/'"`)]*\.(?:internal|corp|lan|intranet|local)(?::\d+)?(?:\/[^\s'"`)]*)?/g,
+      /https?:\/\/(?:[^\s/'"`)]*\.)?linear\.app[^\s'"`)]*|https?:\/\/[^\s/'"`)]*\.(?:internal|corp|lan|intranet|local)(?![A-Za-z0-9-])(?::\d+)?(?:\/[^\s'"`)]*)?/g,
   },
 ];
 
