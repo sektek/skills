@@ -1,0 +1,14 @@
+{
+  "denyList": [
+    "smartcar",
+    "e2",
+    "everyday electric",
+    "developer-documentation-skills",
+    "generator-workspace",
+    "npm-publish-pipeline",
+    { "term": "design", "backticked": true },
+    "aws-auth",
+    "db-passthrough-auth"
+  ],
+  "allow": []
+}
