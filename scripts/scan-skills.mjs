@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SKILLS_DIR = 'skills';
 
 const RULES = [
-  { rule: 'email', pattern: /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/g },
+  { rule: 'email', pattern: /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b/g },
   {
     rule: 'absolute-path',
     pattern: /(?<![\w.])\/(?:home|Users)\/[^\s'"`)]+|(?<![\w.])\/workspace\w*(?:\/[^\s'"`)]*)?/g,
@@ -46,7 +46,8 @@ function denyRules(denyList) {
 
 export function loadConfig(root) {
   const path = join(root, 'scan.config.json');
-  const config = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : {};
+  if (!existsSync(path)) throw new Error(`scan.config.json not found in ${root}`);
+  const config = JSON.parse(readFileSync(path, 'utf8'));
   const { denyList = [], allow = [] } = config;
   for (const entry of allow) {
     if (!entry.file || !entry.rule || !entry.reason) {
@@ -121,7 +122,7 @@ function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   try {
     process.exitCode = main(process.argv.slice(2));
   } catch (error) {

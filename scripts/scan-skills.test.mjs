@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
@@ -94,6 +94,16 @@ describe('allow list', () => {
     );
     assert.throws(() => loadConfig(root), /reason/);
   });
+
+  it('fails when scan.config.json is missing', () => {
+    const root = mkdtempSync(join(tmpdir(), 'scan-cfg-'));
+    after(() => rmSync(root, { recursive: true, force: true }));
+    assert.throws(() => loadConfig(root), /not found/);
+  });
+
+  it('does not treat package versions as emails', () => {
+    assert.deepEqual(rulesFor('npm install react@18.3.1 typescript@5.4.2'), []);
+  });
 });
 
 describe('cli', () => {
@@ -134,5 +144,19 @@ describe('cli', () => {
     assert.equal(run('--staged').status, 1);
     git('add', 'skills/bad/SKILL.md');
     assert.equal(run('--staged').status, 0);
+  });
+});
+
+describe('entry point', () => {
+  it('runs when invoked through a symlinked path', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'scan-link-'));
+    after(() => rmSync(dir, { recursive: true, force: true }));
+    const link = join(dir, 'scripts-link');
+    symlinkSync(dirname(script), link);
+    const result = spawnSync('node', [join(link, 'scan-skills.mjs'), '--root', dir], {
+      encoding: 'utf8',
+    });
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /not found/);
   });
 });
