@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { basename, isAbsolute, join, relative, resolve } from 'node:path';
+import { existsSync, readdirSync, readFileSync, realpathSync, statSync } from 'node:fs';
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const NAME_PATTERN = /^[a-z0-9-]+$/;
@@ -57,7 +57,7 @@ function extractLinkTargets(markdown) {
   const text = stripCode(markdown);
   const targets = [];
   const inline = /!?\[[^\]]*\]\(\s*(<[^>]*>|[^\s)]*)/g;
-  const reference = /^ {0,3}\[[^\]]+\]:\s*(<[^>]*>|\S+)/gm;
+  const reference = /^ {0,3}\[(?!\^)[^\]]+\]:[ \t]*(<[^>]*>|\S+)/gm;
   for (const pattern of [inline, reference]) {
     for (const [, raw] of text.matchAll(pattern)) {
       targets.push(raw.replace(/^<|>$/g, ''));
@@ -78,7 +78,7 @@ function checkLinks(skillDir, file, markdown, report) {
       // keep the undecoded path
     }
 
-    const resolved = resolve(skillDir, path);
+    const resolved = resolve(dirname(file), path);
     const rel = relative(skillDir, resolved);
     if (isAbsolute(path) || rel === '..' || rel.startsWith('..' + '/') || isAbsolute(rel)) {
       report(file, `link escapes the skill directory: ${raw}`);
@@ -138,8 +138,13 @@ export function validateSkills(skillsDir) {
   return problems;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const problems = validateSkills(resolve(process.argv[2] ?? 'skills'));
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
+  const explicit = process.argv[2];
+  if (explicit && !existsSync(explicit)) {
+    console.error(`${explicit}: skills directory not found`);
+    process.exit(2);
+  }
+  const problems = validateSkills(resolve(explicit ?? 'skills'));
   for (const problem of problems) console.error(problem);
   process.exit(problems.length ? 1 : 0);
 }

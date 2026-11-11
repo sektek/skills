@@ -26,8 +26,11 @@ function makeSkills(files) {
   return dir;
 }
 
-function cli(dir) {
-  return spawnSync(process.execPath, [script, dir], { encoding: 'utf8' });
+function cli(dir, options = {}) {
+  return spawnSync(process.execPath, dir ? [script, dir] : [script], {
+    encoding: 'utf8',
+    ...options,
+  });
 }
 
 before(() => {
@@ -48,9 +51,15 @@ describe('validate-skills', () => {
     assert.equal(cli(dir).status, 0);
   });
 
-  it('exits 0 when the skills directory is absent or empty', () => {
-    assert.equal(cli(join(root, 'nope')).status, 0);
+  it('exits 0 when the default skills directory is absent or empty', () => {
+    assert.equal(cli(undefined, { cwd: makeSkills({}) }).status, 0);
     assert.equal(cli(makeSkills({})).status, 0);
+  });
+
+  it('fails when an explicit skills directory does not exist', () => {
+    const result = cli(join(root, 'nope'));
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /nope: skills directory not found/);
   });
 
   it('reports missing frontmatter', () => {
@@ -108,6 +117,26 @@ describe('validate-skills', () => {
       'alpha/references/a.md': '[up](../../beta/SKILL.md)\n',
     });
     assert.match(validateSkills(dir)[0], /references\/a\.md: link escapes/);
+  });
+
+  it('resolves links in nested files against the file, not the skill root', () => {
+    const dir = makeSkills({
+      'alpha/SKILL.md': valid('alpha'),
+      'alpha/references/a.md': '[sib](b.md) [up](../SKILL.md)\n',
+      'alpha/references/b.md': 'b\n',
+    });
+    assert.deepEqual(validateSkills(dir), []);
+    const broken = makeSkills({
+      'alpha/SKILL.md': valid('alpha'),
+      'alpha/references/a.md': '[gone](c.md)\n',
+      'alpha/c.md': 'at the root only\n',
+    });
+    assert.match(validateSkills(broken)[0], /references\/a\.md: broken link: c\.md/);
+  });
+
+  it('does not treat footnote definitions as links', () => {
+    const dir = makeSkills({ 'alpha/SKILL.md': valid('alpha', 'text[^1]\n\n[^1]: See the docs') });
+    assert.deepEqual(validateSkills(dir), []);
   });
 
   it('ignores links inside fenced code blocks and code spans', () => {
