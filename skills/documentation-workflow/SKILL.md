@@ -7,7 +7,7 @@ description: Plan and run a documentation task from discovery to review, and dec
 
 Stages: (1) Discover source, tests, exports, package metadata, and existing docs. (2) Decide whether documentation needs changing and select the appropriate location. (3) Outline sections, audience, evidence needs, and unknowns. (4) Draft from the outline. (5) Verify links and code examples, iterating on failures. (6) Review technical and editorial quality.
 
-Run autonomously by default. Support optional human approval checkpoints after any stage. Persist the outline and verification results even in autonomous mode; `assets/outline.md` and `assets/verification-report.md` are starting templates for them. Each stage can be invoked independently. Do not invent missing implementation details; flag uncertainties. Verification and review may return work to drafting.
+Run autonomously by default. Support optional human approval checkpoints after any stage. Persist the outline and verification results even in autonomous mode; [outline](assets/outline.md) and [verification report](assets/verification-report.md) are starting templates for them. Each stage can be invoked independently. Do not invent missing implementation details; flag uncertainties. Verification and review may return work to drafting.
 
 ## Decide whether and where to document
 

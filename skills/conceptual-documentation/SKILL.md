@@ -15,7 +15,7 @@ Apply the `technical-writing` and `markdown-authoring` skills. Use the `api-rese
 2. Inspect existing README, guides, API docs, and conceptual material. If a short clarification or link in an existing document would suffice, prefer that to creating another page.
 3. Identify the **central conceptual insight** while planning: what should the reader understand afterward that a catalog of APIs would not teach? Use it to guide scope and organization, but do not force it into a thesis statement or announce it explicitly. If no distinct insight emerges, reconsider whether a separate document is needed.
 4. Define one coherent scope. Do not create a separate page for every class, concept, or pattern by default.
-5. Use the documentation-workflow skill to choose placement **and a discoverable entry point** (such as an existing README or docs index); do not prescribe a directory structure or require conceptual documentation for every repository.
+5. Use the `documentation-workflow` skill to choose placement **and a discoverable entry point** (such as an existing README or docs index); do not prescribe a directory structure or require conceptual documentation for every repository.
 
 ## Select the mental model to explain
 
@@ -37,6 +37,6 @@ Use the `api-research` skill to establish evidence for the relevant roles, termi
 - Check each significant concept, relationship, and guarantee against the inspected evidence; note unresolved questions explicitly.
 - Review for plausible but unsupported architectural claims, misleading conventional terminology, redundancy with existing docs, and unexplained leaps between concepts.
 - Read prose aloud for unnatural or generic phrasing. Replace vague personification (such as components 'deciding what to do') and abstract declarations with precise descriptions of behavior. Prefer plain engineering language over rhetorical emphasis, repeated claims of modularity, or promotional-sounding conclusions.
-- Check whether previous review findings or memorable edge cases have been overemphasized at the expense of the reader's actual question. Use past mistakes to improve verification, not as mandatory topics for every new explanation.
+- Check that no single notable edge case is overemphasized at the expense of the reader's actual question.
 - Verify relative links from the document's actual directory, confirm that targets exist, and check that readers can discover the explanation from an appropriate entry point. Inspect diagrams and examples where tooling permits. Do not claim that a conceptual explanation is verified solely because code compiles or lint passes.
 - Report the intended reader and conceptual question, where the document belongs, what evidence supports it, and any uncertainties needing a human decision.

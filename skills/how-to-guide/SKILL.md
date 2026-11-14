@@ -12,7 +12,7 @@ Apply the `api-research` skill when choosing or explaining public API usage. App
 ## Discover the task
 
 1. Define a concrete outcome and a reader with the minimum necessary prior knowledge.
-2. Research relevant public APIs and intended usage with api-research; retain only findings that affect this task.
+2. Research relevant public APIs and intended usage with the `api-research` skill; retain only findings that affect this task.
 3. Identify prerequisites: tools, runtime, external services, credentials, permissions, and expected starting state.
 4. Identify operational hazards: destructive actions, duplicate processing, resource cleanup, retries, credentials, and environment-specific behavior.
 5. Record unknowns; never manufacture commands, flags, API signatures, guarantees, or expected output.
@@ -21,7 +21,7 @@ Apply the `api-research` skill when choosing or explaining public API usage. App
 
 Adapt the following path rather than treating it as a mandatory template:
 
-1. **Title:** Start with a task verb and name the result, such as "Publish and consume events with RabbitMQ."
+1. **Title:** Start with a task verb and name the result, such as "Configure a webhook endpoint and receive a test event."
 2. **Outcome:** State what the reader will have working, in one or two sentences.
 3. **Prerequisites:** List only the setup the reader actually needs. Give version constraints only when verified.
 4. **Steps:** Number the actions in execution order. Provide complete, copyable commands and code; show where files belong and when to run them.
@@ -35,14 +35,14 @@ Adapt the following path rather than treating it as a mandatory template:
 - Prefer the shortest path to a useful result. Include alternative approaches only if a choice is necessary to complete the task.
 - Explain *why* only when it affects a choice, a safety condition, or successful execution.
 - Use public APIs rather than internal helpers; show lifecycle management for services, connections, and consumers.
-- Make asynchronous ordering explicit: start listeners before publishing when delivery depends on them.
-- Do not silently imply exactly-once delivery, persistence, retries, or successful delivery merely because a send method resolved.
+- Make asynchronous ordering explicit: start receivers before senders when delivery depends on them.
+- Do not silently imply exactly-once delivery, persistence, retries, or successful processing merely because a call returned or a promise resolved.
 - Avoid mixing a tutorial's conceptual progression, an explanation's architectural argument, or a reference's exhaustive option tables into the procedure.
 - Prefer a link to a detailed explanation over an extended detour.
 
 ## Verify and deliver
 
-Review the chosen API path against the api-research findings separately from code correctness; compiling and running do not establish idiomatic usage.
+Review the chosen API path against the `api-research` findings separately from code correctness; compiling and running do not establish idiomatic usage.
 
 Use the `code-examples` skill to check every code block. Run type-checking and an end-to-end exercise when the environment permits; verify commands, links, and expected output. Record the actual evidence level for each example: **Verified**, **Type-checked**, **Inspected**, **Unverified**, or **Failed**.
 

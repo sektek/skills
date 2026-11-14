@@ -1,6 +1,6 @@
 # Editorial decisions
 
-These are original, project-specific conventions for developer documentation. Apply them as defaults, not as rigid rules that override accuracy or readability.
+These are editorial conventions for developer documentation. Apply them as defaults, not as rigid rules that override accuracy or readability.
 
 ## Voice and audience
 
@@ -64,12 +64,3 @@ Review terminology in context. A word appearing in a compound, proper name, quot
 These conventions do not determine a document's information architecture. The document-type skill does that. They also do not authorize changing API names, technical behavior, or product positioning.
 
 When conventions conflict, prioritize technical accuracy, reader success, and consistency with the project's existing public terminology, in that order.
-
-## Open questions
-
-- Whether to standardize US English spelling across all projects.
-- Whether to enforce sentence case in headings.
-- Whether to adopt a fixed line length for prose.
-- How much reference material belongs in a README versus linked documentation.
-
-Resolve these questions based on real documentation examples rather than preemptively adding rules.
