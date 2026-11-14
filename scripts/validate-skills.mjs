@@ -144,7 +144,8 @@ export function validateSkills(skillsDir) {
     const groupDir = join(skillsDir, group);
     const strayFile = join(groupDir, 'SKILL.md');
     if (existsSync(strayFile)) {
-      report(strayFile, `skill is not inside a group; move it to ${join(group, '<skill>')}`);
+      report(strayFile, 'skill is not inside a group; move it into a group directory');
+      continue;
     }
 
     for (const name of listDirectories(groupDir)) {

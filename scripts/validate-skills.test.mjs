@@ -159,10 +159,14 @@ describe('validate-skills grouping', () => {
   });
 
   it('reports a skill that is not inside a group', () => {
-    const dir = makeSkills({ 'alpha/SKILL.md': valid('alpha') });
+    const dir = makeSkills({
+      'alpha/SKILL.md': valid('alpha'),
+      'alpha/references/a.md': '# A\n',
+    });
     const result = cli(dir);
     assert.equal(result.status, 1);
     assert.match(result.stderr, /alpha\/SKILL\.md: skill is not inside a group/);
+    assert.equal(validateSkills(dir).length, 1);
   });
 
   it('reports a skill name used in more than one group', () => {
