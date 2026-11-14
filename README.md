@@ -7,8 +7,7 @@ agent loads when a task matches the skill's description.
 The skills are written for Claude Code and organized as a Claude Code plugin marketplace. They are
 plain `SKILL.md` files, so other harnesses can read them too; see [Other harnesses](#other-harnesses).
 
-This repository is private. Environment-specific implementations of the environment skills live
-outside it.
+Environment-specific implementations of the environment skills live outside this repository.
 
 ## Plugins and skills
 
@@ -65,7 +64,7 @@ Shared vocabulary (`roles`) and neutral templates (`branch-naming`, `linear-work
 | `dev-environment` | Build, lint, and test commands, worktree setup, commit and release rules |
 
 `gh-stack` is intentionally not in this repository. Several `dev-workflow` skills refer to it by
-name; install it from its upstream GitHub repository.
+name; install it from its upstream GitHub repository, [github/gh-stack](https://github.com/github/gh-stack).
 
 ## Install with Claude Code
 
@@ -80,8 +79,8 @@ Add the marketplace, then install the plugins you want:
 
 The same operations are available in a shell as `claude plugin marketplace add <source>` and
 `claude plugin install <plugin>@sektek-skills`. The source can also be a local path to a checkout,
-which is the form that was run to check these commands. Adding it from GitHub was not run; the
-repository is private, so it needs access through a signed-in GitHub account or git credentials.
+which is the form that was run to check these commands. Adding it from GitHub was not run. A private checkout needs access through a signed-in GitHub
+account or git credentials.
 
 Skills refer to each other by name. Many tell the agent to stop and ask when a skill they need is
 missing, so install the plugins together. `dev-workflow` also needs `gh-stack`, which is not in
