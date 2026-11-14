@@ -96,43 +96,67 @@ function listMarkdown(dir) {
   });
 }
 
+function listDirectories(dir) {
+  return readdirSync(dir, { withFileTypes: true })
+    .filter(entry => entry.isDirectory())
+    .map(entry => entry.name)
+    .sort();
+}
+
+function validateSkill(skillDir, report) {
+  const name = basename(skillDir);
+  const skillFile = join(skillDir, 'SKILL.md');
+
+  if (!existsSync(skillFile) || !statSync(skillFile).isFile()) {
+    report(skillFile, 'SKILL.md is missing');
+    return;
+  }
+
+  const frontmatter = parseFrontmatter(readFileSync(skillFile, 'utf8'));
+  if (!frontmatter) {
+    report(skillFile, 'missing YAML frontmatter');
+  } else {
+    if (!frontmatter.name) {
+      report(skillFile, 'frontmatter is missing "name"');
+    } else if (!NAME_PATTERN.test(frontmatter.name)) {
+      report(skillFile, `name "${frontmatter.name}" must use only lowercase letters, digits and hyphens`);
+    } else if (frontmatter.name !== name) {
+      report(skillFile, `name "${frontmatter.name}" does not match directory "${name}"`);
+    }
+    if (!frontmatter.description) {
+      report(skillFile, 'frontmatter is missing a non-empty "description"');
+    }
+  }
+
+  for (const file of listMarkdown(skillDir)) {
+    checkLinks(skillDir, file, readFileSync(file, 'utf8'), report);
+  }
+}
+
 export function validateSkills(skillsDir) {
   const problems = [];
   if (!existsSync(skillsDir)) return problems;
 
-  const dirs = readdirSync(skillsDir, { withFileTypes: true })
-    .filter(entry => entry.isDirectory())
-    .map(entry => entry.name)
-    .sort();
+  const report = (file, message) => problems.push(`${file}: ${message}`);
+  const seen = new Map();
 
-  for (const name of dirs) {
-    const skillDir = join(skillsDir, name);
-    const report = (file, message) => problems.push(`${file}: ${message}`);
-    const skillFile = join(skillDir, 'SKILL.md');
-
-    if (!existsSync(skillFile) || !statSync(skillFile).isFile()) {
-      report(skillFile, 'SKILL.md is missing');
-      continue;
+  for (const group of listDirectories(skillsDir)) {
+    const groupDir = join(skillsDir, group);
+    const strayFile = join(groupDir, 'SKILL.md');
+    if (existsSync(strayFile)) {
+      report(strayFile, `skill is not inside a group; move it to ${join(group, '<skill>')}`);
     }
 
-    const frontmatter = parseFrontmatter(readFileSync(skillFile, 'utf8'));
-    if (!frontmatter) {
-      report(skillFile, 'missing YAML frontmatter');
-    } else {
-      if (!frontmatter.name) {
-        report(skillFile, 'frontmatter is missing "name"');
-      } else if (!NAME_PATTERN.test(frontmatter.name)) {
-        report(skillFile, `name "${frontmatter.name}" must use only lowercase letters, digits and hyphens`);
-      } else if (frontmatter.name !== basename(skillDir)) {
-        report(skillFile, `name "${frontmatter.name}" does not match directory "${name}"`);
-      }
-      if (!frontmatter.description) {
-        report(skillFile, 'frontmatter is missing a non-empty "description"');
-      }
-    }
+    for (const name of listDirectories(groupDir)) {
+      const skillDir = join(groupDir, name);
+      validateSkill(skillDir, report);
 
-    for (const file of listMarkdown(skillDir)) {
-      checkLinks(skillDir, file, readFileSync(file, 'utf8'), report);
+      const first = seen.get(name);
+      if (first) {
+        report(join(skillDir, 'SKILL.md'), `skill name "${name}" is also used in ${first}`);
+      } else {
+        seen.set(name, skillDir);
+      }
     }
   }
   return problems;
