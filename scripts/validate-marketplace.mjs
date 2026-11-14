@@ -26,7 +26,7 @@ export function validateMarketplace(root) {
     return [`${MANIFEST}: ${error.code === 'ENOENT' ? 'file not found' : error.message}`];
   }
 
-  if (!Array.isArray(manifest.plugins)) {
+  if (!Array.isArray(manifest?.plugins)) {
     return [`${MANIFEST}: "plugins" must be an array`];
   }
 
@@ -97,4 +97,4 @@ function main() {
   console.log('Marketplace manifest is valid.');
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) main();

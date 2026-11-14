@@ -57,6 +57,11 @@ describe('validateMarketplace', () => {
     assert.match(error, /"plugins" must be an array/);
   });
 
+  it('reports JSON that is not an object', () => {
+    const [error] = validateMarketplace(makeRepo({ raw: 'null' }));
+    assert.match(error, /"plugins" must be an array/);
+  });
+
   it('reports duplicate plugin names', () => {
     const manifest = { plugins: [entry('a', ['./skills/a/']), entry('a', ['./skills/b/'])] };
     const errors = validateMarketplace(makeRepo({ manifest }));
@@ -132,6 +137,15 @@ describe('validate-marketplace CLI', () => {
     });
     assert.equal(result.status, 1);
     assert.match(result.stderr, /not used by any plugin/);
+  });
+
+  it('validates when run through a symlink', () => {
+    const link = join(root, `link-${counter++}.mjs`);
+    symlinkSync(script, link);
+    const result = spawnSync(process.execPath, [link, makeRepo({ manifest: { plugins: [] } })], {
+      encoding: 'utf8',
+    });
+    assert.equal(result.status, 1);
   });
 
   it('accepts this repository', () => {
