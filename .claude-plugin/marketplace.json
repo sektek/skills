@@ -1,0 +1,38 @@
+{
+  "name": "sektek-skills",
+  "owner": {
+    "name": "sektek"
+  },
+  "metadata": {
+    "description": "Reusable agent skills for documentation, development workflow, and environment conventions."
+  },
+  "plugins": [
+    {
+      "name": "documentation",
+      "description": "Skills for researching, writing, and reviewing developer documentation.",
+      "source": ".",
+      "strict": false,
+      "skills": [
+        "./skills/documentation/"
+      ]
+    },
+    {
+      "name": "dev-workflow",
+      "description": "Skills for taking work from a Linear ticket to reviewed pull requests: tickets, worktrees, verification, self-review, and PR handling.",
+      "source": ".",
+      "strict": false,
+      "skills": [
+        "./skills/dev-workflow/"
+      ]
+    },
+    {
+      "name": "environment",
+      "description": "Neutral environment templates (conventions, branch naming, roles) that a private profile replaces with its own. Install only one implementation of each environment skill.",
+      "source": ".",
+      "strict": false,
+      "skills": [
+        "./skills/environment/"
+      ]
+    }
+  ]
+}

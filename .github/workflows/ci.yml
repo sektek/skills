@@ -22,3 +22,5 @@ jobs:
         run: node --test
       - name: Validate skills
         run: node scripts/validate-skills.mjs
+      - name: Validate marketplace
+        run: node scripts/validate-marketplace.mjs
