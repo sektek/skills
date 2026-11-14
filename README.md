@@ -135,3 +135,7 @@ when the first release exists.
 ## Contributing
 
 See [CLAUDE.md](CLAUDE.md) for the layout, checks, and rules for adding or changing skills.
+
+## License
+
+[MIT](LICENSE)
