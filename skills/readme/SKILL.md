@@ -64,4 +64,3 @@ Provide:
 - A verification summary identifying what was checked and what remains uncertain.
 
 When asked only to review or propose an outline, do not rewrite the README without authorization.
-
