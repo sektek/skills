@@ -53,12 +53,13 @@ Taking work from a Linear ticket to reviewed pull requests.
 
 ### environment
 
-Neutral templates for the conventions the other skills read. See
+Shared vocabulary (`roles`) and neutral templates (`branch-naming`, `linear-workspace`,
+`dev-environment`) for the conventions the other skills read. See
 [Environment skills](#environment-skills).
 
 | Skill | Purpose |
 |---|---|
-| `roles` | Defines "the developer" and "the agent" |
+| `roles` | Defines "the developer" and "the agent" (shared vocabulary, not a template) |
 | `branch-naming` | Branch naming convention |
 | `linear-workspace` | Linear team, labels, and title conventions |
 | `dev-environment` | Build, lint, and test commands, worktree setup, commit and release rules |
@@ -70,34 +71,39 @@ name; install it from its upstream GitHub repository.
 
 Add the marketplace, then install the plugins you want:
 
-```sh
+```text
 /plugin marketplace add sektek/skills
 /plugin install documentation@sektek-skills
 /plugin install dev-workflow@sektek-skills
 /plugin install environment@sektek-skills
 ```
 
-The same operations are available outside a session as `claude plugin marketplace add <source>`
-and `claude plugin install <plugin>@sektek-skills`. The source can also be a local path to a
-checkout. Because the repository is private, adding it from GitHub needs a signed-in GitHub
-account or git credentials with access to it.
+The same operations are available in a shell as `claude plugin marketplace add <source>` and
+`claude plugin install <plugin>@sektek-skills`. The source can also be a local path to a checkout,
+which is the form that was run to check these commands. Adding it from GitHub was not run; the
+repository is private, so it needs access through a signed-in GitHub account or git credentials.
 
-Skills refer to each other by name. If a skill needs another one that is not installed, it tells
-the agent to stop and ask, so install the plugins together.
+Skills refer to each other by name. Many tell the agent to stop and ask when a skill they need is
+missing, so install the plugins together. `dev-workflow` also needs `gh-stack`, which is not in
+this repository.
 
 ## Environment skills
 
-The `environment` plugin holds neutral templates: `roles`, `branch-naming`, `linear-workspace`,
-and `dev-environment`. They set no environment-specific values. Other skills read them whenever
+The `environment` plugin holds `roles`, which is shared vocabulary, and three neutral templates:
+`branch-naming`, `linear-workspace`, and `dev-environment`. The templates set no
+environment-specific values. Other skills read them whenever
 they need a branch name, a ticket or PR title style, or a build, lint, or test command.
 
-To supply your own values, write a private implementation of each skill under the same name,
+To supply your own values, write a private implementation of each template under the same name,
 keeping the sections the template lists under "What an implementation must provide". Install
-exactly one implementation of each environment skill. Do not rely on two skills with the same name
+exactly one implementation of each template. `roles` has no implementation contract: install one
+copy and keep it neutral. Do not rely on two skills with the same name
 overriding each other: harnesses differ in how they treat duplicates, and some list both.
 
-If you install a private implementation, do not install the `environment` plugin from this
-repository for the skills it replaces.
+Plugins are per group, so with a private implementation either skip the `environment` plugin and
+install `roles` another way, or make sure the duplicates are not both loaded. On Copilot, any one
+plugin exposes every skill, so install the private implementation in place of this repository's
+plugins.
 
 ## Other harnesses
 

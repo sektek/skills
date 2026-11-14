@@ -28,8 +28,9 @@ run `node --test` without a path.
   name, with a line telling the agent to stop and ask when a needed skill is missing.
 - Skill names are unique across all groups.
 - To add a skill, put it under the right group and make the marketplace check pass.
-- `environment` skills are neutral templates that a private implementation replaces. Exactly one
-  implementation of each must be installed. `gh-stack` is deliberately absent; it is installed
+- `branch-naming`, `linear-workspace` and `dev-environment` in `environment` are neutral templates
+  that a private implementation replaces; exactly one implementation of each must be installed.
+  `roles` is shared vocabulary, not a template; keep it neutral. `gh-stack` is deliberately absent; it is installed
   from its upstream repository.
 - No scanner exists. Before committing an imported or new skill, review it line by line for names
   of people, projects, organizations, or customers; internal URLs; ticket keys; emails; absolute
@@ -37,5 +38,6 @@ run `node --test` without a path.
 
 ## Commits and releases
 
-Conventional Commits. `feat` and `fix` on skill content produce a release; `docs`, `chore`, and
-`ci` do not.
+Conventional Commits. Releases are planned (release-it from `main`, not set up yet). The intended
+rule: `feat` and `fix` on skill content release; `docs`, `chore`, and `ci` do not. Pick the type
+with that in mind.
