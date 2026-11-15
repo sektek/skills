@@ -176,3 +176,6 @@ attic/
 third-party/
 
 # END BASE GITIGNORE
+
+# Dependencies
+node_modules/
