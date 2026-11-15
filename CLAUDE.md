@@ -38,6 +38,6 @@ run `node --test` without a path.
 
 ## Commits and releases
 
-Conventional Commits. Releases are planned (release-it from `main`, not set up yet). The intended
-rule: `feat` and `fix` on skill content release; `docs`, `chore`, and `ci` do not. Pick the type
-with that in mind.
+Conventional Commits. Releases are cut from `main` by release-it when the Release workflow runs
+(`feat` is a minor, `fix` and `perf` a patch, a breaking change a major; `docs`, `chore`, and `ci`
+do not release). Pick the type with that in mind. The release commit message ends in `[skip ci]`.
