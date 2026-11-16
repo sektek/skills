@@ -123,14 +123,44 @@ on a real prompt was not verified for any harness. Skills that mention Claude Co
 
 ## Install with dotfiles
 
-Planned. Installing the plugins through a dotfiles setup is not available yet.
+A dotfiles setup can install the portable skills straight from a release instead of through a
+plugin marketplace. The author's dotfiles installer does this:
+
+1. It reads the pinned tag from a `skills.version` file in the dotfiles repository (currently
+   `v1.0.0`).
+2. It clones this repository at that tag into a temporary directory. It stops with an error, and
+   leaves the installed skills alone, if the clone fails.
+3. It copies each `skills/<group>/<name>` directory to `~/.claude/skills/<name>/`, dropping the
+   group directory. Skill names are unique across groups.
+4. It then copies the profile's own skills over the top. A profile overrides a skill, such as one
+   of the environment skills, by shipping a directory with the same name.
+
+To move to a newer release, change the tag in `skills.version` and run the installer again.
 
 ## Releases and versions
 
-Planned. Releases are cut from `main` with release-it, and git tags identify versions. Until
-releases exist there are no version numbers to pin to. Plugin entries in the manifest deliberately
-carry no `version` field, so the tag identifies the version. How to pin to a tag will be documented
-when the first release exists.
+Releases are cut from `main` with [release-it](https://github.com/release-it/release-it). Each
+release is a git tag (`v1.0.0` is the first), a GitHub release with generated notes, and an updated
+`CHANGELOG.md`. Nothing is published to npm.
+
+Versions follow semantic versioning, derived from the commit types since the last tag:
+
+| Commit | Release |
+|---|---|
+| `feat` | minor (`1.0.0` to `1.1.0`) |
+| `fix`, `perf` | patch (`1.0.0` to `1.0.1`) |
+| a breaking change (`!` or a `BREAKING CHANGE` footer) | major |
+| `docs`, `chore`, `ci`, and the like | no release |
+
+A tag identifies the whole repository, so plugin entries in the manifest carry no `version` field.
+To pin a Claude Code marketplace install to a release, add `#<tag>` to the source:
+
+```text
+/plugin marketplace add sektek/skills#v1.0.0
+```
+
+Without the `#<tag>`, the marketplace follows the default branch. In the dotfiles install, the pin
+is the tag in `skills.version`.
 
 ## Contributing
 
