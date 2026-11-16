@@ -121,22 +121,6 @@ These checks show that skills are installed and discovered. Whether a model actu
 on a real prompt was not verified for any harness. Skills that mention Claude Code tools, or
 `gh-stack`, will not resolve everywhere.
 
-## Install with dotfiles
-
-A dotfiles setup can install the portable skills straight from a release instead of through a
-plugin marketplace. The author's dotfiles installer does this:
-
-1. It reads the pinned tag from a `skills.version` file in the dotfiles repository (currently
-   `v1.0.0`).
-2. It clones this repository at that tag into a temporary directory. It stops with an error, and
-   leaves the installed skills alone, if the clone fails.
-3. It copies each `skills/<group>/<name>` directory to `~/.claude/skills/<name>/`, dropping the
-   group directory. Skill names are unique across groups.
-4. It then copies the profile's own skills over the top. A profile overrides a skill, such as one
-   of the environment skills, by shipping a directory with the same name.
-
-To move to a newer release, change the tag in `skills.version` and run the installer again.
-
 ## Releases and versions
 
 Releases are cut from `main` with [release-it](https://github.com/release-it/release-it). Each
@@ -159,8 +143,7 @@ To pin a Claude Code marketplace install to a release, add `#<tag>` to the sourc
 /plugin marketplace add sektek/skills#v1.0.0
 ```
 
-Without the `#<tag>`, the marketplace follows the default branch. In the dotfiles install, the pin
-is the tag in `skills.version`.
+Without the `#<tag>`, the marketplace follows the default branch.
 
 ## Contributing
 
