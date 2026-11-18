@@ -61,6 +61,26 @@ acceptance.
 
 ## 2. Split
 
+### Deliverable
+
+Decide first what the ticket produces. It is one of two kinds:
+
+- **A change that merges:** code, or documentation a reader of the repo will keep needing, such
+  as a README or a maintained reference page. It gets a branch and a PR, and the rest of this
+  skill applies.
+- **Findings:** the result of a verification, evaluation, readiness review, or investigation.
+  Its deliverable is a **comment on the ticket**. It gets no branch, no PR, and no report file
+  in the repository.
+
+To tell them apart, ask whether a reader of the repo in six months would still need the
+result. A record of what was tested at one revision goes stale; a comment keeps it with the
+ticket, and it can name private repositories and skills that a file in a public repository
+could not. If the work will change the repo only when something fails, the findings stay in the
+comment and each failure becomes its own ticket.
+
+A ticket that both investigates and changes code is two tickets: a findings ticket, and a
+change ticket blocked by it.
+
 ### Shape
 
 Every PR maps to exactly one issue.
@@ -174,6 +194,8 @@ Follow the `linear-workspace` skill's title rule. Where titles are conventional 
 
 - **Single issue and sub-issue:** the title becomes the PR title and the squash commit, so its
   type drives the release. Match it to the change.
+- **Findings ticket:** produces no commit, so its type doesn't drive a release. Use `test` for a
+  verification, otherwise `docs` or `chore`, per `linear-workspace`'s title rule.
 - **Parent:** produces no commit. Its type describes the overall change: use the most
   significant type among its sub-issues, in the order `feat!`/`fix!` > `feat` > `fix` >
   anything else. For a parent spanning several packages, drop the scope or use the main one.
@@ -220,6 +242,12 @@ that affects the scope.
 * How to confirm this ticket alone is done: commands to run and expected results, plus
   behaviours the tests must cover.
 ```
+
+**Findings ticket:** use the same sections with these differences. Scope lists what to check
+(commands, environments, items) and ends with "Post the results as a comment on this issue,
+with the revision or version tested and a result for every item." It names no file to create and
+no PR. Verification reads: "every item has a recorded result in the comment, and each failure
+has a follow-up ticket." Say in Out of scope that the ticket changes nothing in the repository.
 
 **Rewrites and refactors** (more than a small parameter change): don't describe the approach
 only in prose. Paste the current implementation, write the proposed replacement as real code,

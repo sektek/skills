@@ -87,7 +87,9 @@ Arrange them:
 - Typical shape: new components first, then wiring, then consumers, then wrap-up.
 - The **last milestone is `wrap-up`**: CLAUDE.md and README updates, and end-to-end
   verification of the whole project. Only wrap-up tickets touch project-wide docs, and each is
-  blocked by everything it documents or verifies. Draft these with `create-ticket` too.
+  blocked by everything it documents or verifies. Draft these with `create-ticket` too. The
+  end-to-end verification ticket is a findings ticket: it posts its results as a comment and
+  creates no report file or PR.
 - Name milestones `N. <what it delivers>`, numbered from `0`. Each description is one or two
   sentences saying what the milestone delivers.
 
