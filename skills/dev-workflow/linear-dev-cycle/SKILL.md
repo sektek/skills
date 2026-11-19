@@ -58,6 +58,9 @@ at a **Checkpoint** whose condition applies, or when a ticket is ambiguous.
   creates tickets.
 - **Given one sub-issue of a larger parent:** do just that sub-issue, after checking that its
   blockers are merged or stackable.
+- **Findings ticket** (a verification, evaluation, readiness review, or investigation whose
+  deliverable is a comment on the ticket): no branch and no PR. Follow **Findings tickets**
+  below instead of phases 2–8.
 - **No ticket yet:** ask the developer whether a ticket already exists for the work. If it
   does, use it. If not:
   - one component or one piece of wiring → create it with `create-ticket` (standalone mode,
@@ -68,7 +71,27 @@ at a **Checkpoint** whose condition applies, or when a ticket is ambiguous.
   Planning isn't wasted, because the plan becomes ticket content. Then continue with the
   created ticket(s). Never do the work untracked.
 
-## How the phases run
+## Findings tickets
+
+A findings ticket's Scope lists what to check and ends with posting the results as a comment
+on the ticket (see `create-ticket`'s "Deliverable"). There is no code change, so skip
+worktrees, branches, PRs, and `self-review`. Run the intake (phase 1), then:
+
+1. Set the ticket to the **started** state and assign it, per the rule in phase 2.
+2. Do the checks in the main session, or in a subagent that returns its results. Use scratch
+   space and isolated environments (temporary home and config directories) so the checks never
+   touch the developer's real configuration or credentials. Run what the ticket lists as
+   written, and record what actually happened, including anything that could not be run.
+3. Post the results as one comment on the ticket: the revision or version tested, a result per
+   item, the failures, and anything that could not be verified and why. A subagent never
+   changes Linear, so the main session posts the comment.
+4. File a follow-up ticket for each failure or gap with the `create-ticket` skill (this is
+   creating tickets, which is the developer's decision, so offer them first if the ticket did
+   not already ask for them).
+5. Set the ticket to the **done** state. No PR merge will do it, so the agent sets it.
+
+Do not create a report file in the repository. If the work turns out to need a change to the
+repository, that is a separate change ticket, blocked by this one.
 
 - Phases 1–3 run once per ticket, in the main session.
 - Phases 4–5 run once per **unit**, each in its own **subagent**. A unit is either a stack (a
@@ -108,7 +131,9 @@ don't guess. Ambiguity means, for example:
 - the ticket doesn't say *how* to do something and there's more than one reasonable way,
   with real consequences (public API shape, behaviour change, data handling);
 - a sub-issue looks too big, out of order, or missing, or a blocker isn't merged or
-  stackable.
+  stackable;
+- the Scope names a report file as its only deliverable. Ask whether to post the results as a
+  comment on the ticket instead, and treat it as a findings ticket if the developer agrees.
 
 If nothing is ambiguous, don't stop. Go straight to phase 2.
 
