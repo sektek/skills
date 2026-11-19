@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0](https://github.com/sektek/skills/compare/v1.0.1...v1.1.0) (2026-11-19)
+
+### Features
+
+* **skills:** post the results of findings tickets as a ticket comment, not a repo file ([#23](https://github.com/sektek/skills/issues/23)) ([9475199](https://github.com/sektek/skills/commit/9475199813df98f4c157abefd8d13fae187a744a))
+
 ## [1.0.1](https://github.com/sektek/skills/compare/v1.0.0...v1.0.1) (2026-11-16)
 
 ## 1.0.0 (2026-11-15)
